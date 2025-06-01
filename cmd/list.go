@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -25,7 +26,13 @@ func init() {
 }
 
 func list_files() {
-	err := filepath.Walk("/Users/samdevlin/Library/Group Containers/243LU875E5.groups.com.apple.podcasts/Library/Cache", func(path string, info os.FileInfo, err error) error {
+	path, e := get_podcast_directory()
+	if e != nil {
+		panic(e)
+	}
+
+	path += "/Library/Group Containers/243LU875E5.groups.com.apple.podcasts/Library/Cache"
+	err := filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			fmt.Println(err)
 			return err
@@ -49,4 +56,13 @@ func list_files() {
 	if err != nil {
 		fmt.Println(err)
 	}
+}
+
+func get_podcast_directory() (response string, err error) {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatalf("Could not establish user's home directory. Error: \n %s", err)
+		return "", err
+	}
+	return home, nil
 }
