@@ -16,7 +16,7 @@ var listCmd = &cobra.Command{
 	Long:  "List all downloaded podcasts from apple podcasts",
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
-		get_files()
+		list_files()
 	},
 }
 
@@ -24,7 +24,7 @@ func init() {
 	rootCmd.AddCommand(listCmd)
 }
 
-func get_files() {
+func list_files() {
 	err := filepath.Walk("/Users/samdevlin/Library/Group Containers/243LU875E5.groups.com.apple.podcasts/Library/Cache", func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			fmt.Println(err)
