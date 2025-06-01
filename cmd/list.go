@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
+	"github.com/dhowden/tag"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +31,22 @@ func get_files() {
 			fmt.Println(err)
 			return err
 		}
-		fmt.Printf("dir: %v: name: %s\n", info.IsDir(), path)
+
+		if !info.IsDir() && strings.Contains(path, ".mp3") {
+			file, err := os.Open(path)
+
+			if err != nil {
+				fmt.Println(err)
+			}
+
+			m, err := tag.ReadFrom(file)
+
+			if err != nil {
+				fmt.Println(err)
+			}
+
+			fmt.Printf("Title: %s \n Podcast: %s\n\n", m.Artist(), m.Album())
+		}
 		return nil
 	})
 	if err != nil {
