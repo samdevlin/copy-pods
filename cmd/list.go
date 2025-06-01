@@ -20,7 +20,6 @@ var listCmd = &cobra.Command{
 	},
 }
 
-// TODO: play with https://github.com/dhowden/tag
 func init() {
 	rootCmd.AddCommand(listCmd)
 }
@@ -41,11 +40,9 @@ func get_files() {
 
 			m, err := tag.ReadFrom(file)
 
-			if err != nil {
-				fmt.Println(err)
+			if err == nil {
+				fmt.Printf("Title: %s \n Podcast: %s\n\n", m.Title(), m.Album())
 			}
-
-			fmt.Printf("Title: %s \n Podcast: %s\n\n", m.Artist(), m.Album())
 		}
 		return nil
 	})
